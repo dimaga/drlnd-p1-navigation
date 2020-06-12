@@ -38,19 +38,23 @@ The project has been developed and tested on Mac OS Catalina with a CPU version 
 
 ### Instructions
 
-If you installed conda environment as described in https://github.com/udacity/deep-reinforcement-learning/tree/dc65050c8f47b365560a30a112fb84f762005c6b README.md, type in your terminal:
+1. Download the project to your PC
+
+2. Open your terminal, cd to the project folder
+
+3. If you installed conda environment as described in https://github.com/udacity/deep-reinforcement-learning/tree/dc65050c8f47b365560a30a112fb84f762005c6b README.md, type in:
 
 ```
 conda activate drlnd
 ```
 
-Then activate Jupyter notebook in your browser (Chrome is recommended):
+4. Then activate Jupyter notebook from the terminal and open it in your browser (Chrome is recommended):
 
 ```
 jupyter notebook
 ```
 
-Then open Navigation.ipynb from this repository, look through it and Run cells if necessary. 
+5. Open Navigation.ipynb of this repository in your Chrome browser, look through it and Run cells if necessary
 
 * See guidelines how to use Jupyter notebook at https://jupyter.org/
 * Look through __Report.md__ of this repository to learn further details about my solution
