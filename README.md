@@ -38,7 +38,7 @@ The project has been developed and tested on Mac OS Catalina with a CPU version 
 
 ### Instructions
 
-If you installed conda environment as described in https://github.com/udacity/deep-reinforcement-learning/tree/dc65050c8f47b365560a30a112fb84f762005c6b README.md, type
+If you installed conda environment as described in https://github.com/udacity/deep-reinforcement-learning/tree/dc65050c8f47b365560a30a112fb84f762005c6b README.md, type in your terminal:
 
 ```
 conda activate drlnd
