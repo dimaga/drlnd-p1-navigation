@@ -13,11 +13,11 @@ In the pursue of positive rewards, the agent may perform one of the following di
 * 2 - turn left
 * 3 - turn right
 
-The agent perceives the world as 37-dimensional state vector, which consits of agent's velocity and ray-based distances to objects around forward direction.
+The agent perceives the world as 37-dimensional state vector, which consists of agent's velocity and ray-based distances to objects around forward direction.
 
 To find the best policy, the agent learns Deep Q Network with epsilon-greedy policy and a number of optimization tricks.
 
-The project consists of the following files:
+Besides README.md, this repository holds of the following files:
 
 * __Navigation.ipynb__ contains Python code to train and test the agent using different algorithms
 * __*.pth__ stores weights of various Deep Q Neural Network configurations
@@ -25,7 +25,16 @@ The project consists of the following files:
 
 ### Getting Started
 
-TODO: The README has instructions for installing dependencies or downloading needed files.
+Follow the steps, described in https://github.com/udacity/deep-reinforcement-learning/tree/dc65050c8f47b365560a30a112fb84f762005c6b README.md, Dependencies section, to deploy your development environment for this project.
+
+Basically, you will need:
+
+* Python 3.6
+* PyTorch 0.4.0
+* Numpy and Matplotlib, compatible with PyTorch
+* Unity ML Agents. Udacity Navigation Project requires its own version of this environment, available https://github.com/udacity/deep-reinforcement-learning/tree/dc65050c8f47b365560a30a112fb84f762005c6b/python with references to other libraries
+
+The project has been developed and tested on Mac OS Catalina with a CPU version of PyTorch 0.4.0, and in Udacity Workspace with a CUDA version of PyTorch.
 
 ### Instructions
 
