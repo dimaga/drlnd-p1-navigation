@@ -5,7 +5,7 @@
 
 Reinforcement Learning studies how to program agents to learn by interacting with their environment: play a computer game or control a self driving car to avoid dynamic obstacles in a dense traffic.
 
-Agents observe their world, perform actions and occasionally receive rewards. However, they do not know which sequences of actions lead to rewards. In this project, an agent lives in the banana world. It learns how to collect yellow bananas, but avoid blue bananas without any pre-programming, all by itself.
+Agents observe their world, perform actions and occasionally receive rewards. However, they do not know which sequences of actions lead to rewards. In this project, an agent lives in the banana world. It learns how to collect yellow bananas, but to avoid blue bananas without preprogramming of its behavior.
 
 A book _Reinforcement Learning An Introduciton, Second Edition, by Richard S. Sutton and Andrew G. Barto_ provides a great introduction to reinforcement learning algorithms.
 
@@ -51,7 +51,21 @@ If &epsilon; is high, the agent prefers to try new things to explore the environ
 
 #### Deep Q Learning
 
-In its naive form, Q-function is represented by an array with S and A to be indices of that array. This approach is normally used in the books to illustrate how reinforcement learning works on a toy examples. However, in practise, S or A are usually continous and multi-dimensional with infinite amount of values.
+In its naive form, Q-function is represented by an array with S and A to be indices of that array. This approach is normally used in the books to illustrate how reinforcement learning works on some toy examples. However, in practise, S or A are usually continous and multi-dimensional with infinite amount of values.
+
+In this project, A is a discrete value with one of four possible choices: go forward, go backward, turn left or turn right. However, S is a 37-dimensional float vector, holding the speed of the agent and distances to objects in front of it. Therefore, the array form of Q-function will not work here. Instead, Q-function is approximated by an Artificial Network.
+
+https://www.deeplearningbook.org/ is a good introduction to a Deep Learning, studying Artificial Neural Networks. Neural network consists of matrix multiplications by weights, stacked in layers, with non-linear transformations between them. In a classical example, a neural network takes pixel values as the input and predicts what type of an object it sees. For example, it can distinguish cats and dogs.
+
+In this project, the neural network predicts the cumulative reward of possible actions for the given state. That is, it represents a Q-function. This approach is called Deep Q Network. In 2013, Deep Mind successfully applied it to learn the agent to play Atari games at a super-human level by using screen pixels as state S and applying joystick commands as actions A. See their seminal paper at http://files.davidqiu.com//research/nature14236.pdf
+
+Instead of applying Q-learning recursive convergence formula, given in the previous example, artificial neural network weights are adjusted using a method, called Stochastic Gradient Descent. &alpha; is replaced with a parameter, called _learningRate_. Stochastic Gradient Descent calculates matrices of partial derivatives of weights with respect to _(R_t + &lambda; max<sub>a</sub> Q(S<sub>t+1</sub>,a) - Q(S<sub>t</sub>,A<sub>t</sub>)))_ error. It then adds this partial derivates multiplied by _learningRate_ to weights to minimize the error whenever the neural network sees _S<sub>t</sub>_ next time to produce cumulative rewards for _A<sub>t</sub>_.
+
+Calculating matrices of partial derivatives for a very big expression is manually infeasible. On the top of that, all of the numeric operations take enormous amount of hardware resources and need parallel computations. Often, they should run on GPU or a specialized hardware. Fortunately, there are libraries that automate partial derivative generation and parallel computations. The most popular are https://www.tensorflow.org/ and https://pytorch.org/
+
+This project uses https://pytorch.org/ version 0.4.0. The neural networks have been trained on CPU and double checked on GPU. Since 37-dimensional state vector is relatively small, CPU resources were enough.
+
+Instead of stochastic gradient descent, our project uses Adam optimizer (see https://arxiv.org/abs/1412.6980)
 
 
 #### Rainbow
