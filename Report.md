@@ -13,7 +13,13 @@ In this project, reinforcement learning is implemented via a Q-function. Q-funct
 
 ![formula](https://render.githubusercontent.com/render/math?math=Q(S,A))
 
-_Cumulative_ reward is a sum of rewards that the agent receives when performing a sequence of actions till the end of the episode. Collecting bananas in the envrionment of this project is _episodic_. It means, that after a number of steps the of the agent with the environment interaction ends, and the agents respawns again in the new environment.
+_Cumulative_ reward is a sum of rewards that the agent receives when performing a sequence of actions till the end of the episode. Normally, future rewards are _discounted_ with some &lambda; factor, which is between 0 and 1:
+
+
+
+ h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
+
+Collecting bananas in the envrionment of this project is _episodic_. It means, that after a number of steps the of the agent with the environment interaction ends, the agents respawns again in a new version of the banana world and starts collecting rewards from zero again.
 
 #### Deep Q Learning
 
