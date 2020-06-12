@@ -13,7 +13,7 @@ In the pursue of positive rewards, the agent may perform one of the following di
 * 2 - turn left
 * 3 - turn right
 
-The agent perceives the world as 37-dimensional state vector, which consists of agent's velocity and ray-based distances to objects around forward direction.
+The agent perceives the world as a 37-dimensional state vector, which consists of the agent's velocity and ray-based distances to objects around forward direction.
 
 To find the best policy, the agent learns Deep Q Network with epsilon-greedy policy and a number of optimization tricks.
 
@@ -38,4 +38,19 @@ The project has been developed and tested on Mac OS Catalina with a CPU version 
 
 ### Instructions
 
-TODO: The README describes how to run the code in the repository, to train the agent.
+If you installed conda environment as described in https://github.com/udacity/deep-reinforcement-learning/tree/dc65050c8f47b365560a30a112fb84f762005c6b README.md, type
+
+```
+conda activate drlnd
+```
+
+Then activate Jupyter notebook in your browser (Chrome is recommended):
+
+```
+jupyter notebook
+```
+
+Then open Navigation.ipynb from this repository, look through it and Run cells if necessary. 
+
+* See guidelines how to use Jupyter notebook at https://jupyter.org/
+* Look through __Report.md__ of this repository to learn further details about my solution
