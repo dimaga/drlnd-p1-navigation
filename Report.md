@@ -9,17 +9,35 @@ Agents observe their world, perform actions and occasionally receive rewards. Ho
 
 A book _Reinforcement Learning An Introduciton, Second Edition, by Richard S. Sutton and Andrew G. Barto_ provides a great introduction to reinforcement learning algorithms.
 
-In this project, reinforcement learning is implemented via a Q-function. Q-function predicts what a _cumulative_ reward the agent may obtain if the agent performs in state S an action A.
+In this project, reinforcement learning is implemented via a Q-function. Q-function predicts what a _cumulative_ reward the agent may obtain if the agent performs in a state S an action A:
 
 ![formula](https://render.githubusercontent.com/render/math?math=Q(S,A))
 
-_Cumulative_ reward is a sum of rewards that the agent receives when performing a sequence of actions till the end of the episode. Normally, future rewards are _discounted_ with some &lambda; factor, which is between 0 and 1:
+During training, the agent explores the world to learn an approximation of the Q-function. During testing, it exploits the Q-function by choosing the action that corresponds to the maximum Q-value for the given state:
 
+![formula](https://render.githubusercontent.com/render/math?math=argmax_a%20Q(S,A))
 
+_Cumulative_ reward is a sum of rewards that the agent receives when performing a sequence of actions till the end of the episode. Normally, future rewards are _discounted_ with some &lambda; factor, which is between 0 and 1. Let's assume that:
 
- h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
+* _t_ is a timestep
+
+* _R<sub>t</sub>_ is an immediate reward at t (in this project, +1 for picking a yellow banana, and -1 for picking a blue banana; the negative reward is a punishment)
+
+* _A<sub>t</sub>_ is an agent action (in this project, it is a direction of motion)
+
+* _S<sub>t</sub>_ is the environment state (in this project, it is ray distances to objects in front of the agent and the agent speed)
+
+then:
+
+![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20%3D%20R_t%20%2B%20\lambda%20R_{t%2B1}%20%2B%20\lambda^2%20R_{t%2B2}%20%2B%20\lambda^3%20R_{t%2B3}%20%2B%20...)
+
+The sum propagates until the end of the episode.
 
 Collecting bananas in the envrionment of this project is _episodic_. It means, that after a number of steps the of the agent with the environment interaction ends, the agents respawns again in a new version of the banana world and starts collecting rewards from zero again.
+
+The sum above can be written in a recursive form:
+
+![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20%3D%20R_t%20%2B%20\lambda%20Q(S_{t%2B1},A_{t%2B1}))
 
 #### Deep Q Learning
 
