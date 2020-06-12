@@ -47,7 +47,7 @@ One of the approaches to learn Q-function would be to initialize it with some sm
 
 In order to decide an action while training, the agent may generate a uniform random value between 0 and 1, and if it is less than some &epsilon;, choose a random action; otherwise, choose _argmax<sub>a</sub>Q(S<sub>t</sub>, a)_. The former case is called _exploration_, the letter is _exploitation_. And the overall approach is called an &epsilon;-greedy policy.
 
-If &epsilon; is high, the agent prefers to try new things to explore the environment. If &epsilon; is low, the agent searches for the maximum reward under the current knowledge of its Q-value estimate. In this project, &epsilon; is set 1.0 in the beginning of training and slowly converge to 0.01. See ```train()``` method in ```Navigation.ipynb``` and its ```eps_start``` and ```eps_end``` arguments.
+If &epsilon; is high, the agent prefers to try new things to explore the environment. If &epsilon; is low, the agent searches for the maximum reward under the current knowledge of its Q-value estimate. In this project, &epsilon; is set 1.0 in the beginning of training and slowly converges to 0.01 by the end. See ```train()``` method in ```Navigation.ipynb``` and its ```eps_start``` and ```eps_end``` arguments.
 
 #### Deep Q Learning
 
