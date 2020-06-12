@@ -43,6 +43,12 @@ One of the approaches to learn Q-function would be to initialize it with some sm
 
 ![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20\leftarrow%20Q(S_t,A_t)%20%2B%20\alpha%20(R_t%20%2B%20\lambda%20max_a%20Q(S_{t%2B1},a)-%20Q(S_t,A_t)))
 
+&alpha; controls the level of convergence. It is a value between 0.0 and 1.0. And the approach just described is called _Q-learning_.
+
+In order to decide an action while training, the agent may generate a uniform random value between 0 and 1, and if it is less than some &epsilon;, choose a random action; otherwise, choose _argmax<sub>a</sub>Q(S<sub>t</sub>, a)_. The former case is called _exploration_, the letter is _exploitation_. And the overall approach is called an &epsilon;-greedy policy.
+
+If &epsilon; is high, the agent prefers to try new things to explore the environment. If &epsilon; is low, the agent searches for the maximum reward under the current knowledge of its Q-value estimate. In this project, &epsilon; is set 1.0 in the beginning of training and slowly converge to 0.01. See ```train()``` method in ```Navigation.ipynb``` and its ```eps_start``` and ```eps_end``` arguments.
+
 #### Deep Q Learning
 
 In its naive form, Q-function is represented by an array with S and A to be indices of that array. This approach is normally used in the books to illustrate how reinforcement learning works on a toy examples. However, in practise, S or A are usually continous and multi-dimensional with infinite amount of values.
