@@ -67,7 +67,21 @@ This project uses https://pytorch.org/ version 0.4.0. The neural networks have b
 
 Instead of stochastic gradient descent, my project uses Adam optimizer (see https://arxiv.org/abs/1412.6980). It improves the convergence accuracy and speed of stochastic gradient descent by tuning learning rate dependently on the training results and by applying an number of additional heuristics and methods.
 
+The structure of the most basic implementation of Deep Q Network agent for the banana world is shown in the image below:
+
 ![vanilla_q_network.png](vanilla_q_network.png)
+
+It is implemented in VanillaQNetwork class in _Navigation.ipynb_. The constructor of this class allocates three matrices with weights:
+1. ```fc1``` is 37x64 matrix
+2. ```fc2``` is 64x64 matrix
+3. ```fc3``` is 64x4 matrix
+
+The state _S_ gets multiplied by three matrices sequentially in order to obtain _Q(S, a)_ values (besides matrix weights, there are bias values that are added after each multiplication; but for the simplicity of my explanation, I skip them).
+
+Three matrix multiplications could have been replaced with a single matrix and my neural network would not have learnt complex things if non-linear ReLU units were missing between them. Each _ReLU(x)_ operation returns x if it is positive, or 0 otherwise. It adds non-linearity to the calculations, allowing neural network to learn complex patterns.
+
+
+
 
 #### Rainbow
 
