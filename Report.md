@@ -86,4 +86,4 @@ TODO: A plot of rewards per episode is included to illustrate that the agent is 
 
 * Try replacing discrete actions with continous commands, like linear and angular velocity, to smoothly pass through bananas
 
-* Try training the agents in a real environment to pick objects or explore the real world. For example, implement robot vacuum cleaner AI
+* Try training the agents in a real environment to pick objects or explore the real world. For example, implement a vacuum cleaner robot based on Deep Q Network rather than random actions, heuristics or SLAM
