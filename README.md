@@ -56,7 +56,7 @@ conda activate drlnd
 jupyter notebook
 ```
 
-5. Open Navigation.ipynb of this repository in your Chrome browser, look through it and Run cells if necessary
+5. Open Navigation.ipynb of this repository in your browser, look through it and Run cells if necessary
 
 * See guidelines how to use Jupyter notebook at https://jupyter.org/
 * Look through __Report.md__ of this repository to learn further details about my solution
