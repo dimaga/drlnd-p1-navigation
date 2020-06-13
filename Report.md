@@ -80,8 +80,15 @@ The state _S_ gets multiplied by three matrices sequentially in order to obtain 
 
 Three matrix multiplications could have been replaced with a single matrix and my neural network would not have learnt complex things if non-linear ReLU units were missing between them. Each _ReLU(x)_ operation returns x if it is positive, or 0 otherwise. It adds non-linearity to the calculations, allowing neural network to learn complex patterns.
 
+In order to efficiently use neural networks to learn Q-value, Deep Mind in their article proposed the following extensions:
 
+__Replay Buffer__ saves agent experiences as tuples (_S<sub>t</sub>_, _A<sub>t</sub>_, _R<sub>t</sub>_, _S<sub>t+1</sub>_) in memory to be picked randomly later for learning. Neural network converges faster if it receives _uncorrelated_ experiences, i.e. from random learning time steps. In my project, ```ReplayBuffer``` class implements this functionality, it stores up to 100000 of such tuples in a ```deque```, randomly sampling batches of 64 items to train my neural network
 
+__Q target value__ separates target neural network from trained neural network. This helps reduce variance while training, as the target Q-value remains fixed when trained Q-value approaches it. The actual training formula looks like:
+
+![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20\leftarrow%20Q(S_t,A_t)%20%2B%20\alpha%20(R_t%20%2B%20\lambda%20max_a%20Q'(S_{t%2B1},a)-%20Q(S_t,A_t)))
+
+where _Q'_ is another neural network, which does not participate in training. Occasionally, _Q'_ picks weights from _Q_. In my project, _Q'_ is stored in ```VanillaAgent.qnetwork_target``` field, and Q is ```VanillaAgent.optimizer_local```. ```qnetwork_target``` borrows weight values from ```optimizer_local``` in ```soft_update()``` method using https://en.wikipedia.org/wiki/Exponential_smoothing with ```TAU``` coefficient.
 
 #### Rainbow
 
