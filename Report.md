@@ -55,7 +55,7 @@ In its naive form, Q-function is represented by an array with S and A to be indi
 
 In this project, A is a discrete value with one of four possible choices: go forward, go backward, turn left or turn right. However, S is a 37-dimensional float vector, holding the speed of the agent and distances to objects in front of it. Therefore, the array form of Q-function will not work here. Instead, Q-function is approximated by an Artificial Network.
 
-https://www.deeplearningbook.org/ is a good introduction to a Deep Learning, studying Artificial Neural Networks. Neural network consists of matrix multiplications by weights, stacked in layers, with non-linear transformations between them. In a classical example, a neural network takes pixel values as the input and predicts what type of an object it sees. For example, it can distinguish cats and dogs.
+https://www.deeplearningbook.org/ is a good introduction to Deep Learning, studying Artificial Neural Networks. Neural network consists of matrix multiplications by weights, stacked in layers, with non-linear transformations between them. In a classical example, a neural network takes pixel values as the input and predicts what type of an object it sees. For example, it can distinguish cats and dogs.
 
 In this project, the neural network predicts the cumulative reward of possible actions for the given state. That is, it represents a Q-function. This approach is called Deep Q Network. In 2013, Deep Mind successfully applied it to learn the agent to play Atari games at a super-human level by using screen pixels as state S and applying joystick commands as actions A. See their seminal paper at http://files.davidqiu.com//research/nature14236.pdf
 
@@ -78,4 +78,12 @@ TODO: A plot of rewards per episode is included to illustrate that the agent is 
 
 ### Ideas for Future Work
 
-TODO: The submission has concrete future ideas for improving the agent's performance.
+* Try Asynchronous Methods for Deep Reinforcement Learning, explained in https://arxiv.org/abs/1602.01783 - this change requires an update of Unity ML Agents library to at least v. 0.9, as mentioned in https://blogs.unity3d.com/ru/2019/11/11/training-your-agents-7-times-faster-with-ml-agents/
+
+* Replace ray-based obstacle detection with pixelwise input, based on convolutional neural networks, see https://en.wikipedia.org/wiki/Convolutional_neural_network and https://pytorch.org/docs/master/generated/torch.nn.Conv2d.html#conv2d
+
+* Try recurrent neural network with LSTM ( https://en.wikipedia.org/wiki/Long_short-term_memory ) and Transformers ( https://en.wikipedia.org/wiki/Transformer_(machine_learning_model) ) to better learn about the hidden state of the world (behind the agent) and avoid Buridan's ass problem, when the agent gets frozen between two choices and does not dare which action to pick
+
+* Try replacing discrete actions with continous commands, like linear and angular velocity, to smoothly pass through bananas
+
+* Try training the agents in a real environment to pick objects or explore the real world. For example, implement robot vacuum cleaner AI
