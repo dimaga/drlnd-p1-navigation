@@ -110,19 +110,15 @@ In my project, the extension is implemented in ```DoubleQAgent._calc_loss()``` m
 
 #### Dueling Deep Q-Network
 
-https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimate of the state value _V(S<sub>t</sub>)_ and the action advantage value _A(S, A<sub>t</sub>)_ allows the neural network to generalize better. Action advantage is the difference between Q-value and V-value:
+https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimate of the state value _V(S<sub>t</sub>)_ and the action advantage value _A(S, A<sub>t</sub>)_ allows the neural network to generalize better. Action advantage is the difference in value of one action over the other:
 
-![formula](https://render.githubusercontent.com/render/math?math=A(S_t,A_t)%20%3D20Q(S_t,A_t)%20-%20V(S_t))
-
-The advantage of the _argmax<sub>a</sub>Q(S, a)_ is 0. For other actions 0 or negative.
-
-The extension affects the network architecture and is shown in the picture below.
+The extension changes the network architecture as shown in the picture below.
 
 ![dueling_q_network.png](dueling_q_network.png)
 
 The rightmost yellow block is not trained. It calculates _Q(S, a)_ out of _V(S)_ and _A(S, a)_ with the following formula:
 
-![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20%3D%20Q(S_t,A_t)%20%2B%%20V(S_t))
+![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20%3D%20A(S_t,A_t)%20%2B%%20V(S_t)-\sum_{n%3D0}^{3}%202^{A(S_t,A_n)})
 
 #### Prioritized Replay
 
