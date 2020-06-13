@@ -1,6 +1,8 @@
 # Project 1: Navigation
 ### Project Details
 
+![BananaWorld](banana_world.png)
+
 This is my solution to Navigation Project of Udacity Deep Reinforcement Learning course. Original project template is available at https://github.com/udacity/deep-reinforcement-learning/tree/master/p1_navigation
 
 An agent lives in the world full of yellow and blue bananas. The purpose of the agent is to collect as many yellow bananas as possible while avoiding blue bananas. The agent receives a reward of +1 for collecting a yellow banana, and a reward of -1 for a blue banana.
