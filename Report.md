@@ -33,7 +33,7 @@ then:
 
 The sum propagates until the end of the episode.
 
-Collecting bananas in the envrionment of this project is _episodic_. It means, that after a number of steps the of the agent with the environment interaction ends, the agents respawns again in a new version of the banana world and starts collecting rewards from zero again.
+Collecting bananas in the envrionment of this project is _episodic_. It means, that after a number of steps when the agent with the environment interaction ends, the agents respawns again in a new version of the banana world and starts collecting rewards from zero again.
 
 The sum above can be written in a recursive form:
 
@@ -65,7 +65,7 @@ Calculating matrices of partial derivatives for a very big expression is manuall
 
 This project uses https://pytorch.org/ version 0.4.0. The neural networks have been trained on CPU and double checked on GPU. Since 37-dimensional state vector is relatively small, CPU resources were enough.
 
-Instead of stochastic gradient descent, our project uses Adam optimizer (see https://arxiv.org/abs/1412.6980). It improves the convergence accuracy and speed of stochastic gradient descent by tuning learning rate dependently on the training results and by applying an number of additional heuristics and methods.
+Instead of stochastic gradient descent, my project uses Adam optimizer (see https://arxiv.org/abs/1412.6980). It improves the convergence accuracy and speed of stochastic gradient descent by tuning learning rate dependently on the training results and by applying an number of additional heuristics and methods.
 
 
 #### Rainbow
