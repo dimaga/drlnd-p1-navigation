@@ -71,11 +71,31 @@ Instead of stochastic gradient descent, my project uses Adam optimizer (see http
 
 #### Rainbow
 
+https://arxiv.org/pdf/1710.02298.pdf
+
+#### Double Deep Q-Network
+
+https://arxiv.org/abs/1509.06461
+
+#### Dueling Deep Q-Network
+
+https://arxiv.org/abs/1511.06581
+
 ![dueling_q_network.png](dueling_q_network.png)
+
+#### Prioritized Replay
+
+https://arxiv.org/abs/1511.05952
+
+#### Distributed Q-Value
+
+https://arxiv.org/pdf/1707.06887.pdf
 
 ![distributed_dueling_q_network.png](distributed_dueling_q_network.png)
 
-TODO: The report clearly describes the learning algorithm, along with the chosen hyperparameters. It also describes the model architectures for any neural networks.
+#### Noisy Network
+
+https://arxiv.org/pdf/1706.10295.pdf
 
 ### Plot of Rewards
 
