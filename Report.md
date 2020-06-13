@@ -92,15 +92,25 @@ where _Q'_ is another neural network, which does not participate in training. Oc
 
 #### Rainbow
 
-https://arxiv.org/pdf/1710.02298.pdf
+Since the original success of Deep Q Network on Atari games, Deep Mind has proposed a number of extensions to Deep Q Networks in their seminal paper https://arxiv.org/pdf/1710.02298.pdf
+
+In my project, I tried to reproduce those extensions. In order to to see the impact of the extensions, I decided to continue training the agent after it achieves 13.0 scores. Therefore, ```train()``` method from Navigation.ipynb trains its agent for 1000 episodes, then saves the best configuration, corresponding to the maximum mean score of 100-episode sliding window.
 
 #### Double Deep Q-Network
 
-https://arxiv.org/abs/1509.06461
+https://arxiv.org/abs/1509.06461 proposes the simplest extension: replace _max<sub>a</sub>Q'(S, a)_ with _Q'(S, argmax<sub>a</sub>Q(S, a))_.
+
+Q-learning formula then turns into something like:
+
+![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20\leftarrow%20Q(S_t,A_t)%20%2B%20\alpha%20(R_t%20%2B%20\lambda%20Q'(S_{t%2B1},argmax_a%20Q(S_{t%2B1},a))-%20Q(S_t,A_t)))
+
+The idea is that the vanilla approach may overestimate Q-value, biasing the results of training. Two different Q-value estimates balance out each other. This slows down training in the begining, but finally the agent achieves higher scores.
+
+In my project, the extension is implemented in ```DoubleQAgent._calc_loss()``` method. The paper does not state clearly whether _argmax<sub>a</sub>Q(S, a)_ should be treated as a constant or as a variable when calculating the derivative for training. I tried both approaches, and the latter seems to produce more accurate results. Therefore, ```q_local``` is not detached from ```self.qnetwork_local``` in  ```DoubleQAgent._calc_loss()```.
 
 #### Dueling Deep Q-Network
 
-https://arxiv.org/abs/1511.06581
+https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. By explicitly calculating the action
 
 ![dueling_q_network.png](dueling_q_network.png)
 
