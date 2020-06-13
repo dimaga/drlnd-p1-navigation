@@ -67,14 +67,41 @@ This project uses https://pytorch.org/ version 0.4.0. The neural networks have b
 
 Instead of stochastic gradient descent, my project uses Adam optimizer (see https://arxiv.org/abs/1412.6980). It improves the convergence accuracy and speed of stochastic gradient descent by tuning learning rate dependently on the training results and by applying an number of additional heuristics and methods.
 
+![vanilla_q_network.png](vanilla_q_network.png)
 
 #### Rainbow
+
+![dueling_q_network.png](dueling_q_network.png)
+
+![distributed_dueling_q_network.png](distributed_dueling_q_network.png)
 
 TODO: The report clearly describes the learning algorithm, along with the chosen hyperparameters. It also describes the model architectures for any neural networks.
 
 ### Plot of Rewards
 
-TODO: A plot of rewards per episode is included to illustrate that the agent is able to receive an average reward (over 100 episodes) of at least +13. The submission reports the number of episodes needed to solve the environment.
+#### Vanilla Deep Q Network
+
+![vanilla.png](vanilla.png)
+
+#### Double Deep Q-Network
+
+![double_q.png](double_q.png)
+
+#### Dueling Deep Q-Network
+
+![dueling_q.png](dueling_q.png)
+
+#### Prioritized Replay
+
+![prioritized_replay.png](prioritized_replay.png)
+
+#### Distributed Q-Value
+
+![distributed_q_value.png](distributed_q_value.png)
+
+#### Noisy Network
+
+![noisy_distributed_q_value.png](noisy_distributed_q_value.png)
 
 ### Ideas for Future Work
 
@@ -82,7 +109,7 @@ TODO: A plot of rewards per episode is included to illustrate that the agent is 
 
 * Replace ray-based obstacle detection with pixelwise input, based on convolutional neural networks, see https://en.wikipedia.org/wiki/Convolutional_neural_network and https://pytorch.org/docs/master/generated/torch.nn.Conv2d.html#conv2d
 
-* Try recurrent neural network with LSTM ( https://en.wikipedia.org/wiki/Long_short-term_memory ) and Transformers ( https://en.wikipedia.org/wiki/Transformer_(machine_learning_model) ) to better learn about the hidden state of the world (behind the agent) and avoid Buridan's ass problem, when the agent gets frozen between two choices and does not dare which action to pick
+* Try recurrent neural network with LSTM ( https://en.wikipedia.org/wiki/Long_short-term_memory ) and Transformers ( https://en.wikipedia.org/wiki/Transformer_(machine_learning_model) ) to better learn about the hidden state of the world (bananas behind the agent) and avoid Buridan's ass problem, when the agent gets frozen between two choices and does not dare which action to pick
 
 * Try replacing discrete actions with continous commands, like linear and angular velocity, to smoothly pass through bananas
 
