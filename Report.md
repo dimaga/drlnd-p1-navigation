@@ -150,13 +150,17 @@ https://arxiv.org/pdf/1707.06887.pdf suggests expanding the neural network to pr
 
 ![distributed_dueling_q_network.png](distributed_dueling_q_network.png)
 
-In my project, Q-distribution covers the range of cumulative rewards [-32, 32] with evenly distributed 129 atoms. Each atom holds the probability that Q-value lies within its bin.
+In my project, Q-distribution covers the range of cumulative rewards [-32, 32] with evenly distributed 129 atoms. I've experimented with skewed and smaller ranges (e.g. [-5, +20]) and also tried the values from the article (atoms=51). However, [-32, 32] and atoms=129 produce the best results.
+
+Each atom holds the probability that Q-value lies within its bin. For example, atom<sub>0</sub> holds the probability that _(-32.0 + 64.0 / 130.0)>=Q(S,A)>=-32.0_
 
 #### Noisy Network
 
-https://arxiv.org/pdf/1706.10295.pdf
+https://arxiv.org/pdf/1706.10295.pdf 
 
 ### Plot of Rewards
+
+
 
 #### Vanilla Deep Q Network
 
