@@ -158,9 +158,9 @@ Each atom holds the probability that Q-value lies within its bin. For example, a
 
 Noisy networks add random generators inside their layers, as described in https://arxiv.org/pdf/1706.10295.pdf 
 
-The idea is to substitude the &epsilon;-greedy policy, which uses an external random number generator for explorations, with random noise, generated from the network. The amount of random noise is also controlled by trainable network parameters. Therefore, neural network decides by itself how much it needs exploration over exploitation. The network may potentially explore with more complex and meaningful action sequences than those produced by a uniform random generator.
+The idea is to substitude the &epsilon;-greedy policy, which uses an external random number generator for explorations, with random noise, generated from the network. The amount of random noise is also controlled by trainable network parameters. Therefore, the neural network decides by itself how much it needs exploration over exploitation. The network may potentially explore with more complex and meaningful action sequences than those produced by a uniform random generator.
 
-Noisy networks agent is implemented in ```NoisyDistributedDuelingQNetwork``` class of _Navigation.ipynb_, where network configuraiton is defined in _NoisyDistributedDuelingQNetwork_ class. Two layers of the network, closer to the output are replaced with their noisy counterparts. I tried to make all the layers noisy, but the network stopped learning in that case.
+My noisy networks agent is implemented in ```NoisyDistributedDuelingQNetwork``` class of _Navigation.ipynb_, where network configuraiton is defined in _NoisyDistributedDuelingQNetwork_ class. Two layers of the network, closer to the output are replaced with their noisy counterparts. I tried to make all the layers noisy, but the network stopped learning in that case.
 
 ### Plots of Rewards
 
