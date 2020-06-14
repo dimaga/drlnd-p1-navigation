@@ -51,7 +51,7 @@ If &epsilon; is high, the agent prefers to try new things to explore the environ
 
 #### Deep Q Learning
 
-In its naive form, Q-function is represented by an array with S and A to be indices of that array. This approach is normally used in the books to illustrate how reinforcement learning works on some toy examples. However, in practise, S or A are usually continous and multi-dimensional with infinite amount of values.
+In its naive form, Q-function is represented by an array with S and A to be indices of that array. This approach is traditionally taught in books to illustrate how reinforcement learning works for some toy examples. However, in practise, S or A are usually continous and multi-dimensional with infinite amount of values.
 
 In this project, A is a discrete value with one of four possible choices: go forward, go backward, turn left or turn right. However, S is a 37-dimensional float vector, holding the speed of the agent and distances to objects in front of it. Therefore, the array form of Q-function will not work here. Instead, Q-function is approximated by an Artificial Network.
 
