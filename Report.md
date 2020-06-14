@@ -110,15 +110,15 @@ In my project, the extension is implemented in ```DoubleQAgent._calc_loss()``` m
 
 #### Dueling Deep Q-Network
 
-https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimate of the state value _V(S<sub>t</sub>)_ and the action advantage value _A(S, A<sub>t</sub>)_ allows the neural network to generalize better. Action advantage is the difference in value of one action over the other
+https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimate of the state value _V(S<sub>t</sub>)_ and the action advantage value _A(S, A<sub>t</sub>)_ allows the neural network to generalize better. Action advantage is the difference in value of one action over the other.
 
-The extension changes the network architecture as shown in the picture below.
+The extension changes the network architecture as shown in the picture below:
 
 ![dueling_q_network.png](dueling_q_network.png)
 
 The rightmost yellow block is not trained. It calculates _Q(S, a)_ out of _V(S)_ and _A(S, a)_ with the following formula:
 
-![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t))
+![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20%3D%20A(S_t,A_t)%20%2B%20V(S_t)%20-%20\frac{1}{4}\sum_{n%3D0}^{3}%20A(S_t,A_n))
 
 #### Prioritized Replay
 
