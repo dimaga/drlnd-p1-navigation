@@ -142,9 +142,15 @@ All the hyper-parameter values are borrowed from the article.
 
 #### Distributed Q-Value
 
-https://arxiv.org/pdf/1707.06887.pdf
+Before ```DistributedQValueAgent```, neural networks in _Navigation.ipynb_ estimated the expected value of Q(S, A), see https://en.wikipedia.org/wiki/Expected_value
+
+However, in some cases, expected values may be misleading. For example, if the probability distribution consists of two peaks, the expected value may be in between, corresponding to 0-probability event.
+
+https://arxiv.org/pdf/1707.06887.pdf suggests expanding the neural network to predict the distribution of Q(S, A) rather than its expected value. The distribution is represented by histogram with bins, which are called atoms. The picture below shows the network architecture, implemented in DistributedDuelingQNetwork of _Navigation.ipynb_
 
 ![distributed_dueling_q_network.png](distributed_dueling_q_network.png)
+
+In my project, Q-distribution covers the range of cumulative rewards [-32, 32] with evenly distributed 129 atoms. Each atom holds the probability that Q-value lies within its bin.
 
 #### Noisy Network
 
