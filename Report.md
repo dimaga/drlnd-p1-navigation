@@ -84,7 +84,7 @@ In order to efficiently use neural networks to learn Q-values, Deep Mind in thei
 
 __Replay Buffer__ saves agent experiences as tuples (_S<sub>t</sub>_, _A<sub>t</sub>_, _R<sub>t</sub>_, _S<sub>t+1</sub>_) in memory to be picked randomly later for learning. Neural network converges faster if it receives _uncorrelated_ experiences, i.e. from random non-consecutive time steps. In my project, ```ReplayBuffer``` class implements this functionality, it stores up to 100000 of such tuples in a ```deque```, randomly sampling batches of 64 items to train my neural network
 
-__Q target value__ separates target neural network from trained neural network. This helps reduce variance while training, as the target Q-value remains fixed when then trained Q-value approaches it. The training formula turns into:
+__Q target value__ separates a target neural network from a trained neural network. This helps reduce variance while training, as the target Q-value remains fixed when then trained Q-value approaches it. The training formula turns into:
 
 ![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20\leftarrow%20Q(S_t,A_t)%20%2B%20\alpha%20(R_t%20%2B%20\lambda%20max_a%20Q'(S_{t%2B1},a)-%20Q(S_t,A_t)))
 
@@ -110,7 +110,7 @@ In my project, the extension is implemented in ```DoubleQAgent._calc_loss()``` m
 
 #### Dueling Deep Q-Network
 
-https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimate of the state value _V(S<sub>t</sub>)_ and the action advantage value _A(S, A<sub>t</sub>)_ allows the neural network to generalize better. Action advantage returns the difference of one action value over the other.
+https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimates of the state value _V(S<sub>t</sub>)_ and the action advantage values _A(S, A<sub>t</sub>)_ allow the neural network to generalize better. Action advantage returns the difference of one action value over the other.
 
 The extension changes the network architecture as shown in the picture below:
 
@@ -126,7 +126,7 @@ The formula is implemented in the end of ```DuelingQNetwork.forward()``` method 
 
 #### Prioritized Replay
 
-https://arxiv.org/abs/1511.05952 describes the way to improve efficieny of the Replay Buffer. Instead of uniform random sampling, prioritize tuples that produce the maximum loss. That is, the probability _P(Experience)_ that the tuple is selected from the memory buffer is proportional to the loss, as shown in the formula below:
+https://arxiv.org/abs/1511.05952 describes the way to improve efficiency of the Replay Buffer. Instead of uniform random sampling, prioritize tuples that produce the maximum loss. That is, the probability _P(Experience)_ that the tuple is selected from the memory buffer is proportional to the loss, as shown in the formula below:
 
 ![formula](https://render.githubusercontent.com/render/math?math=P(Experience)%20~%20(R_t%20%2B%20\lambda%20max_a%20Q'(S_{t%2B1},argmax_a%20Q(S_{t%2B1},a))-%20Q(S_t,A_t))^{2*0.6})
 
@@ -138,7 +138,7 @@ Loss values are pre-multiplied by _importance sampling_ weights _w<sub>i</sub>_ 
 
 Where _N_ is the number of experience tuples in the replay buffer, &beta; equals 0.4 in the beginning and linearly converges to 1.0 after 100000 training steps. The pioritized replay buffer is implemented in ```PrioritizedReplayBuffer``` class in _Navigation.ipynb_.
 
-All the hyper-parameter values are borrowed from the article.
+All the hyper-parameter values are borrowed from the article. Except that for convenience of integrating distributed q-value in the next section on the top of the prioritized replay agent, I use squares of residuals, not their modules.
 
 #### Distributed Q-Value
 
