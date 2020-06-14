@@ -146,7 +146,7 @@ Before ```DistributedQValueAgent```, neural networks in _Navigation.ipynb_ estim
 
 However, in some cases, expected values may be misleading. For example, if the probability distribution consists of two peaks, the expected value may be in between, corresponding to 0-probability event.
 
-https://arxiv.org/pdf/1707.06887.pdf suggests expanding the neural network to predict the distribution of Q(S, A) rather than its expected value. The distribution is represented by histogram with bins, which are called atoms. The picture below shows the network architecture, implemented in DistributedDuelingQNetwork of _Navigation.ipynb_
+https://arxiv.org/pdf/1707.06887.pdf suggests expanding the neural network to predict the distribution of Q(S, A) rather than its expected value. The distribution is represented by histogram with bins, which are called atoms. The picture below shows the network architecture, implemented in ```DistributedDuelingQNetwork``` of _Navigation.ipynb_
 
 ![distributed_dueling_q_network.png](distributed_dueling_q_network.png)
 
@@ -156,11 +156,17 @@ Each atom holds the probability that Q-value lies within its bin. For example, a
 
 #### Noisy Network
 
-https://arxiv.org/pdf/1706.10295.pdf 
+Noisy networks add random generators inside their layers, as described in https://arxiv.org/pdf/1706.10295.pdf 
+
+The idea is to substitude &epsilon;-greedy policy, which selects random actions for explorations, with random noise, produced by the network itself. The amount of random noise is also controlled trainable parameters. Therefore, neural network decides by itself when it needs exploration and exploitation, and may potentially explore with more complex and meaningful action sequences than those produced by random uniform generator.
+
+Noisy networks agent is implemented in ```NoisyDistributedDuelingQNetwork``` class of _Navigation.ipynb_, where network configuraiton is defined in _NoisyDistributedDuelingQNetwork_ class. Two layers of the network, closer to the output are replaced with their noisy counterparts. I tried to make all the layers noisy, however, the network stops learning in this case.
 
 ### Plot of Rewards
 
+This section shows trainable plots for different agent configurations. Each agent is trained for 1000 episodes, and the best results, evaluated by the mean 100-episode score window are saved into *.pth files.
 
+In these graphs, Prioritized Replay shows the best results. Distributed Q-Value and  Noisy Network, which are built on the top of Priotized Replay agent, probably need more tuning or more challenging environment to show benefits.
 
 #### Vanilla Deep Q Network
 
