@@ -71,20 +71,20 @@ The structure of the most basic implementation of Deep Q Network agent for the b
 
 ![vanilla_q_network.png](vanilla_q_network.png)
 
-It is implemented in VanillaQNetwork class in _Navigation.ipynb_. The constructor of this class allocates three matrices with weights:
+It is implemented in ```VanillaQNetwork``` class in _Navigation.ipynb_. The constructor of this class allocates three matrices with weights:
 1. ```fc1``` is 37x64 matrix
 2. ```fc2``` is 64x64 matrix
 3. ```fc3``` is 64x4 matrix
 
-The state _S_ gets multiplied by three matrices sequentially in order to obtain _Q(S, a)_ values (besides matrix weights, there are bias values that are added after each multiplication; but for the simplicity of my explanation, I skip them).
+The state _S_ gets multiplied by three matrices sequentially in order to obtain _Q(S, a)_ values (besides matrix weights, there are bias values that are added after each multiplication; but for the simplicity of my explanation, I skip mentioning these details).
 
-Three matrix multiplications could have been replaced with a single matrix and my neural network would not have learnt complex things if non-linear ReLU units were missing between them. Each _ReLU(x)_ operation returns x if it is positive, or 0 otherwise. It adds non-linearity to the calculations, allowing neural network to learn complex patterns.
+Without non-linear operations, three matrix multiplications could have been replaced with a single matrix and my neural network would not have learnt complex things. To prevent this, _ReLU()_ operations follow each but the last matrix multiplication. Each _ReLU(x)_ operation returns x if it is positive, or 0 otherwise. It adds non-linearity to the calculations, allowing neural network to learn complex patterns.
 
-In order to efficiently use neural networks to learn Q-value, Deep Mind in their article proposed the following extensions:
+In order to efficiently use neural networks to learn Q-values, Deep Mind in their article proposed the following extensions:
 
 __Replay Buffer__ saves agent experiences as tuples (_S<sub>t</sub>_, _A<sub>t</sub>_, _R<sub>t</sub>_, _S<sub>t+1</sub>_) in memory to be picked randomly later for learning. Neural network converges faster if it receives _uncorrelated_ experiences, i.e. from random non-consecutive time steps. In my project, ```ReplayBuffer``` class implements this functionality, it stores up to 100000 of such tuples in a ```deque```, randomly sampling batches of 64 items to train my neural network
 
-__Q target value__ separates target neural network from trained neural network. This helps reduce variance while training, as the target Q-value remains fixed when trained Q-value approaches it. The training formula turns into:
+__Q target value__ separates target neural network from trained neural network. This helps reduce variance while training, as the target Q-value remains fixed when then trained Q-value approaches it. The training formula turns into:
 
 ![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20\leftarrow%20Q(S_t,A_t)%20%2B%20\alpha%20(R_t%20%2B%20\lambda%20max_a%20Q'(S_{t%2B1},a)-%20Q(S_t,A_t)))
 
@@ -94,7 +94,7 @@ where _Q'_ is another neural network, which does not participate in training. Oc
 
 Since the original success of Deep Q Network on Atari games, Deep Mind has proposed a number of extensions to Deep Q Networks in their seminal paper https://arxiv.org/pdf/1710.02298.pdf
 
-In my project, I tried to reproduce those extensions. In order to see the impact of the extensions, I decided to continue training the agent after it achieves 13.0 scores. Therefore, ```train()``` method from Navigation.ipynb trains its agent for 1000 episodes, then saves the best configuration, corresponding to the maximum mean score of 100-episode sliding window.
+In my project, I tried to reproduce those extensions. In order to evaluate their impact, I decided to train the agent for 1000 episodes no matter whether it achieves 13.0 scores earlier or not. Then ```train()``` method from _Navigation.ipynb_ saves the best configuration, corresponding to the maximum mean score of 100-episode sliding window.
 
 #### Double Deep Q-Network
 
@@ -106,11 +106,11 @@ Q-learning formula then turns into something like:
 
 The idea is that the vanilla approach may overestimate Q-value, biasing the results of training. Two different Q-value estimates balance out each other. This slows down training in the begining, but finally the agent achieves higher scores.
 
-In my project, the extension is implemented in ```DoubleQAgent._calc_loss()``` method. The paper does not state clearly whether _argmax<sub>a</sub>Q(S, a)_ should be treated as a constant or as a variable when calculating the derivative for training. I tried both approaches, and the latter seems to produce more accurate results. Therefore, ```q_local``` is not detached from ```self.qnetwork_local``` in  ```DoubleQAgent._calc_loss()```.
+In my project, the extension is implemented in ```DoubleQAgent._calc_loss()``` method. The paper does not state clearly whether _argmax<sub>a</sub>Q(S, a)_ should be treated as a constant or as a variable when calculating derivatives for training. I tried both approaches, and the latter seems to produce more accurate results. Therefore, ```q_local``` is not detached from ```self.qnetwork_local``` in  ```DoubleQAgent._calc_loss()```.
 
 #### Dueling Deep Q-Network
 
-https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimate of the state value _V(S<sub>t</sub>)_ and the action advantage value _A(S, A<sub>t</sub>)_ allows the neural network to generalize better. Action advantage is the difference in value of one action over the other.
+https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimate of the state value _V(S<sub>t</sub>)_ and the action advantage value _A(S, A<sub>t</sub>)_ allows the neural network to generalize better. Action advantage returns the difference of one action value over the other.
 
 The extension changes the network architecture as shown in the picture below:
 
@@ -126,7 +126,7 @@ The formula is implemented in the end of ```DuelingQNetwork.forward()``` method 
 
 #### Prioritized Replay
 
-https://arxiv.org/abs/1511.05952 describes the way to improve efficieny of the Replay Buffer. Instead of uniform random sampling, prioritize tuples that produce the maximum loss. That is, the probability _P(Experience)_ is:
+https://arxiv.org/abs/1511.05952 describes the way to improve efficieny of the Replay Buffer. Instead of uniform random sampling, prioritize tuples that produce the maximum loss. That is, the probability _P(Experience)_ that the tuple is selected from the memory buffer is proportional to the loss, as shown in the formula below:
 
 ![formula](https://render.githubusercontent.com/render/math?math=P(Experience)%20~%20(R_t%20%2B%20\lambda%20max_a%20Q'(S_{t%2B1},argmax_a%20Q(S_{t%2B1},a))-%20Q(S_t,A_t))^{2*0.6})
 
@@ -142,23 +142,23 @@ All the hyper-parameter values are borrowed from the article.
 
 #### Distributed Q-Value
 
-Before ```DistributedQValueAgent```, neural networks in _Navigation.ipynb_ estimated the expected value of Q(S, A), see https://en.wikipedia.org/wiki/Expected_value
+Up until ```DistributedQValueAgent```, neural networks in _Navigation.ipynb_ estimated the _expected_ values of Q(S, A), see https://en.wikipedia.org/wiki/Expected_value
 
 However, in some cases, expected values may be misleading. For example, if the probability distribution consists of two peaks, the expected value may be in between, corresponding to 0-probability event.
 
-https://arxiv.org/pdf/1707.06887.pdf suggests expanding the neural network to predict the distribution of Q(S, A) rather than its expected value. The distribution is represented by histogram with bins, which are called atoms. The picture below shows the network architecture, implemented in ```DistributedDuelingQNetwork``` of _Navigation.ipynb_
+https://arxiv.org/pdf/1707.06887.pdf suggests expanding the neural network to predict the distribution of Q(S, A) rather than its expected value. The distribution is represented by a histogram with bins, which are called atoms. The picture below shows the network architecture, implemented in ```DistributedDuelingQNetwork``` of _Navigation.ipynb_
 
 ![distributed_dueling_q_network.png](distributed_dueling_q_network.png)
 
-In my project, Q-distribution covers the range of cumulative rewards [-32, 32] with evenly distributed 129 atoms. I've experimented with skewed and smaller ranges (e.g. [-5, +20]) and also tried the values from the article (atoms=51). However, [-32, 32] and atoms=129 produce the best results.
+In my project, Q-distribution covers the range of cumulative rewards [-32, 32] with evenly distributed 129 atoms. I've experimented with skewed and smaller ranges (e.g. [-5, +20]) and also tried the values from the article (i.e. atoms=51). However, [-32, 32] and atoms=129 produce the best results.
 
-Each atom holds the probability that Q-value lies within its bin. For example, atom<sub>0</sub> holds the probability that _(-32.0 + 64.0 / 130.0)>=Q(S,A)>=-32.0_
+Each atom holds the probability that Q-value lies within its bin. For example, atom<sub>0</sub> holds the probability that _(-32.0 + 64.0 / 130.0) >= Q(S,A) >= -32.0_
 
 #### Noisy Network
 
 Noisy networks add random generators inside their layers, as described in https://arxiv.org/pdf/1706.10295.pdf 
 
-The idea is to substitude &epsilon;-greedy policy, which selects random actions for explorations, with random noise, produced by the network itself. The amount of random noise is also controlled by trainable parameters. Therefore, neural network decides by itself when it needs exploration and exploitation, and may potentially explore with more complex and meaningful action sequences than those produced by a random uniform generator.
+The idea is to substitude &epsilon;-greedy policy, which selects random actions for explorations, with random noise, produced by the network. The amount of random noise is also controlled by trainable parameters. Therefore, neural network decides by itself when it needs exploration and when exploitation, and may potentially explore with more complex and meaningful action sequences than those produced by a uniform random generator.
 
 Noisy networks agent is implemented in ```NoisyDistributedDuelingQNetwork``` class of _Navigation.ipynb_, where network configuraiton is defined in _NoisyDistributedDuelingQNetwork_ class. Two layers of the network, closer to the output are replaced with their noisy counterparts. I tried to make all the layers noisy, however, the network stops learning in this case.
 
