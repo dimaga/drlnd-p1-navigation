@@ -122,11 +122,23 @@ The rightmost yellow block is not trained. It calculates _Q(S, a)_ out of _V(S)_
 
 The last term in the formula subtracts the average of all advantage actions for the given state _S<sub>t</sub>_. It prevents advantage values from growing infinitely.
 
-The formula is implemented in the end of ```DuelingQNetwork.forward()()``` method in _Navigation.ipynb_.
+The formula is implemented in the end of ```DuelingQNetwork.forward()``` method in _Navigation.ipynb_.
 
 #### Prioritized Replay
 
-https://arxiv.org/abs/1511.05952
+https://arxiv.org/abs/1511.05952 describes the way to improve efficieny of the Replay Buffer. Instead of uniform random sampling, prioritize tuples that produce the maximum loss. That is, the probability _P(Experience)_ is:
+
+![formula](https://render.githubusercontent.com/render/math?math=P(Experience)%20~%20(R_t%20%2B%20\lambda%20max_a%20Q'(S_{t%2B1},argmax_a%20Q(S_{t%2B1},a))-%20Q(S_t,A_t))^{2*0.6})
+
+where _A<sub>t</sub>_, _S<sub>t</sub>_, _S<sub>t+1</sub>_ and _R<sub>t</sub>_ are taken from the experience tuple.
+
+Loss values are pre-multiplied by _importance sampling_ weights _w<sub>i</sub>_ before propagation to neural network optimization:
+
+![formula](https://render.githubusercontent.com/render/math?math=w_i%20%3D%20(\frac{1}{N}*\frac{1}{P(i)})^\beta)
+
+Where _N_ is the number of experience tuples in the replay buffer, &beta; equals 0.4 in the beginning and linearly converges to 1.0 after 100000 training steps. The pioritized replay buffer is implemented in ```PrioritizedReplayBuffer``` class in _Navigation.ipynb_.
+
+All the hyper-parameter values are borrowed from the article.
 
 #### Distributed Q-Value
 
