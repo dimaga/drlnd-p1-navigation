@@ -5,7 +5,7 @@
 
 Reinforcement Learning studies how to program agents to learn by interacting with their environment: play a computer game or control a self driving car to avoid dynamic obstacles in a dense traffic.
 
-Agents observe their world, perform actions and occasionally receive rewards. However, they do not know which sequences of actions lead to rewards. In this project, an agent lives in the banana world. It learns how to collect yellow bananas, but to avoid blue bananas without preprogramming of its behavior.
+Agents observe their world, perform actions and occasionally receive rewards. However, they do not know which actions in a sequence lead to rewards. In this project, an agent lives in the banana world. It learns how to collect yellow bananas, but to avoid blue bananas without preprogramming of its behavior.
 
 A book _Reinforcement Learning An Introduciton, Second Edition, by Richard S. Sutton and Andrew G. Barto_ provides a great introduction to reinforcement learning algorithms.
 
@@ -45,7 +45,7 @@ One of the approaches to learn Q-function would be to initialize it with some sm
 
 &alpha; controls the level of convergence. It is a value between 0.0 and 1.0. And the approach just described is called _Q-learning_.
 
-In order to decide an action while training, the agent may generate a uniform random value between 0 and 1, and if it is less than some &epsilon;, choose a random action; otherwise, choose _argmax<sub>a</sub>Q(S<sub>t</sub>, a)_. The former case is called _exploration_, the letter is _exploitation_. And the overall approach is called an &epsilon;-greedy policy.
+In order to decide an action while training, the agent may generate a uniform random value between 0 and 1, and if it is less than some &epsilon;, choose a random action; otherwise, choose _argmax<sub>a</sub>Q(S<sub>t</sub>, a)_. The former case is called _exploration_, the latter is _exploitation_. And the overall approach is called an &epsilon;-greedy policy.
 
 If &epsilon; is high, the agent prefers to try new things to explore the environment. If &epsilon; is low, the agent searches for the maximum reward under the current knowledge of its Q-value estimate. In this project, &epsilon; is set 1.0 in the beginning of training and slowly converges to 0.01 by the end. See ```train()``` method in ```Navigation.ipynb``` and its ```eps_start``` and ```eps_end``` arguments.
 
@@ -63,9 +63,9 @@ Instead of applying Q-learning recursive convergence formula, given in the previ
 
 Calculating matrices of partial derivatives for a very big expression is manually infeasible. On the top of that, all of the numeric operations take enormous amount of hardware resources and need parallel computations. Often, they should run on GPU or a specialized hardware. Fortunately, there are libraries that automate partial derivative generation and parallel computations. The most popular are https://www.tensorflow.org/ and https://pytorch.org/
 
-This project uses https://pytorch.org/ version 0.4.0. The neural networks have been trained on CPU and double checked on GPU. Since 37-dimensional state vector is relatively small, CPU resources were enough.
+This project uses https://pytorch.org/ version 0.4.0. The neural networks have been trained on CPU and double checked on GPU. Since 37-dimensional state vector is relatively small, CPU resources are enough.
 
-Instead of stochastic gradient descent, my project uses Adam optimizer (see https://arxiv.org/abs/1412.6980). It improves the convergence accuracy and speed of stochastic gradient descent by tuning learning rate dependently on the training results and by applying an number of additional heuristics and methods.
+Instead of stochastic gradient descent, my project uses Adam optimizer (see https://arxiv.org/abs/1412.6980). It improves the convergence accuracy and speed of stochastic gradient descent by tuning learning rate dependently on the training results and by applying a number of additional heuristics and methods.
 
 The structure of the most basic implementation of Deep Q Network agent for the banana world is shown in the image below:
 
@@ -82,9 +82,9 @@ Three matrix multiplications could have been replaced with a single matrix and m
 
 In order to efficiently use neural networks to learn Q-value, Deep Mind in their article proposed the following extensions:
 
-__Replay Buffer__ saves agent experiences as tuples (_S<sub>t</sub>_, _A<sub>t</sub>_, _R<sub>t</sub>_, _S<sub>t+1</sub>_) in memory to be picked randomly later for learning. Neural network converges faster if it receives _uncorrelated_ experiences, i.e. from random learning time steps. In my project, ```ReplayBuffer``` class implements this functionality, it stores up to 100000 of such tuples in a ```deque```, randomly sampling batches of 64 items to train my neural network
+__Replay Buffer__ saves agent experiences as tuples (_S<sub>t</sub>_, _A<sub>t</sub>_, _R<sub>t</sub>_, _S<sub>t+1</sub>_) in memory to be picked randomly later for learning. Neural network converges faster if it receives _uncorrelated_ experiences, i.e. from random non-consecutive time steps. In my project, ```ReplayBuffer``` class implements this functionality, it stores up to 100000 of such tuples in a ```deque```, randomly sampling batches of 64 items to train my neural network
 
-__Q target value__ separates target neural network from trained neural network. This helps reduce variance while training, as the target Q-value remains fixed when trained Q-value approaches it. The actual training formula looks like:
+__Q target value__ separates target neural network from trained neural network. This helps reduce variance while training, as the target Q-value remains fixed when trained Q-value approaches it. The training formula turns into:
 
 ![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20\leftarrow%20Q(S_t,A_t)%20%2B%20\alpha%20(R_t%20%2B%20\lambda%20max_a%20Q'(S_{t%2B1},a)-%20Q(S_t,A_t)))
 
@@ -94,7 +94,7 @@ where _Q'_ is another neural network, which does not participate in training. Oc
 
 Since the original success of Deep Q Network on Atari games, Deep Mind has proposed a number of extensions to Deep Q Networks in their seminal paper https://arxiv.org/pdf/1710.02298.pdf
 
-In my project, I tried to reproduce those extensions. In order to to see the impact of the extensions, I decided to continue training the agent after it achieves 13.0 scores. Therefore, ```train()``` method from Navigation.ipynb trains its agent for 1000 episodes, then saves the best configuration, corresponding to the maximum mean score of 100-episode sliding window.
+In my project, I tried to reproduce those extensions. In order to see the impact of the extensions, I decided to continue training the agent after it achieves 13.0 scores. Therefore, ```train()``` method from Navigation.ipynb trains its agent for 1000 episodes, then saves the best configuration, corresponding to the maximum mean score of 100-episode sliding window.
 
 #### Double Deep Q-Network
 
@@ -110,7 +110,7 @@ In my project, the extension is implemented in ```DoubleQAgent._calc_loss()``` m
 
 #### Dueling Deep Q-Network
 
-https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimate of the state value _V(S<sub>t</sub>)_ and the action advantage value _A(S, A<sub>t</sub>)_ allows the neural network to generalize better. Action advantage is the difference in value of one action over the other:
+https://arxiv.org/abs/1511.06581 extends the artificial network architecture to meet the specific needs of Q-learning algorithm. In particular, the paper notices that in some states it is important to know the value of the state itself, not the action. Separate estimate of the state value _V(S<sub>t</sub>)_ and the action advantage value _A(S, A<sub>t</sub>)_ allows the neural network to generalize better. Action advantage is the difference in value of one action over the other
 
 The extension changes the network architecture as shown in the picture below.
 
@@ -118,7 +118,7 @@ The extension changes the network architecture as shown in the picture below.
 
 The rightmost yellow block is not trained. It calculates _Q(S, a)_ out of _V(S)_ and _A(S, a)_ with the following formula:
 
-![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20%3D%20A(S_t,A_t)%20%2B%%20V(S_t)-\sum_{n%3D0}^{3}%202^{A(S_t,A_n)})
+![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t))
 
 #### Prioritized Replay
 
