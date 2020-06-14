@@ -120,6 +120,10 @@ The rightmost yellow block is not trained. It calculates _Q(S, a)_ out of _V(S)_
 
 ![formula](https://render.githubusercontent.com/render/math?math=Q(S_t,A_t)%20%3D%20A(S_t,A_t)%20%2B%20V(S_t)%20-%20\frac{1}{4}\sum_{n%3D0}^{3}%20A(S_t,A_n))
 
+The last term in the formula subtracts the average of all advantage actions for the given state _S<sub>t</sub>_. It prevents advantage values from growing infinitely.
+
+The formula is implemented in the end of ```DuelingQNetwork.forward()()``` method in _Navigation.ipynb_.
+
 #### Prioritized Replay
 
 https://arxiv.org/abs/1511.05952
