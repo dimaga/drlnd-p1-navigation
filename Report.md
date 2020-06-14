@@ -162,7 +162,7 @@ The idea is to substitude &epsilon;-greedy policy, which selects random actions 
 
 Noisy networks agent is implemented in ```NoisyDistributedDuelingQNetwork``` class of _Navigation.ipynb_, where network configuraiton is defined in _NoisyDistributedDuelingQNetwork_ class. Two layers of the network, closer to the output are replaced with their noisy counterparts. I tried to make all the layers noisy, however, the network stops learning in this case.
 
-### Plot of Rewards
+### Plots of Rewards
 
 This section shows trainable plots for different agent configurations. Each agent is trained for 1000 episodes, and the best results, evaluated by the mean 100-episode score window are saved into *.pth files.
 
